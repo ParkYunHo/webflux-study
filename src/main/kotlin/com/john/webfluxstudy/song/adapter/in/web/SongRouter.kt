@@ -18,7 +18,8 @@ class SongRouter(
     @Bean
     fun songRouterFunction(): RouterFunction<ServerResponse> = router {
         accept(MediaType.APPLICATION_JSON).nest {
-            GET("/api/song/info", songHandler::songInfo)
+            GET("/api/song", songHandler::findSong)
+            POST("/api/song", songHandler::saveSong)
         }
     }
 }

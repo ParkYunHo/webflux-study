@@ -1,5 +1,9 @@
 package com.john.webfluxstudy.song.adapter.`in`.web
 
+import com.john.webfluxstudy.common.dto.BaseResponse
+import com.john.webfluxstudy.song.adapter.`in`.web.dto.SongInput
+import lombok.extern.slf4j.Slf4j
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.server.ServerRequest
@@ -14,9 +18,9 @@ import reactor.core.publisher.Mono
 @Component
 class SongHandler {
 
-    fun songInfo(request: ServerRequest): Mono<ServerResponse> =
-        request.bodyToMono<ServerResponse>()
-            .flatMap {
-                ServerResponse.ok().body(BodyInserters.fromValue(it))
-            }
+    fun findSong(request: ServerRequest): Mono<ServerResponse> =
+        BaseResponse().success(null)
+
+    fun saveSong(request: ServerRequest): Mono<ServerResponse> =
+        BaseResponse().success(null)
 }
