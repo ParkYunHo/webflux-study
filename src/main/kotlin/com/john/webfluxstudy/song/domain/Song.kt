@@ -1,12 +1,12 @@
 package com.john.webfluxstudy.song.domain
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import com.john.webfluxstudy.song.adapter.out.persistence.dto.SongDto
 import lombok.NoArgsConstructor
 import lombok.RequiredArgsConstructor
 import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
+import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
 
 //@NoArgsConstructor
@@ -14,11 +14,11 @@ import java.time.LocalDateTime
 @Table(name = "SONG_INFO")
 data class Song (
     @Id
-    @Column(name = "SONG_ID", nullable = false)
+    @Column("SONG_ID")
     val songId: String,
-    @Column(name = "SONG_NAME")
+    @Column("SONG_NAME")
     val songName: String,
     @CreatedDate
-    @Column(name = "CREATED_AT")
+    @Column("CREATED_AT")
     val createAt: LocalDateTime = LocalDateTime.MIN
 )

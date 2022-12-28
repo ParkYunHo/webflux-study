@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS SONG_INFO
+(
+    SONG_ID         varchar(255) NOT NULL,
+    SONG_NAME       varchar(255) NULL,
+    CREATED_AT      DATETIME     NULL,
+    PRIMARY KEY (SONG_ID)
+);
