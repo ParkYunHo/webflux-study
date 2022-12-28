@@ -1,9 +1,6 @@
 spring:
   h2:
     console:
-#      path: /h2
       enabled: true
-#  r2dbc:
-#    url: r2dbc:h2:mem:testdb
-#    username: sa
-#    password:
+  jpa:
+    show-sql: true

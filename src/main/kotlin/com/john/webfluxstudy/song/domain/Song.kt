@@ -20,5 +20,5 @@ data class Song (
     val songName: String,
     @CreatedDate
     @Column("CREATED_AT")
-    val createAt: LocalDateTime = LocalDateTime.MIN
+    val createAt: LocalDateTime = LocalDateTime.now()
 )

@@ -2,6 +2,7 @@ package com.john.webfluxstudy.config
 
 import io.r2dbc.h2.H2ConnectionConfiguration
 import io.r2dbc.h2.H2ConnectionFactory
+import io.r2dbc.h2.H2ConnectionOption
 import io.r2dbc.spi.ConnectionFactory
 import org.h2.tools.Server
 import org.springframework.context.annotation.Bean
@@ -26,6 +27,7 @@ class R2dbcConfig: AbstractR2dbcConfiguration() {
         H2ConnectionFactory(
             H2ConnectionConfiguration.builder()
                 .inMemory("testdb")
+                .property(H2ConnectionOption.DB_CLOSE_DELAY, "-1")
                 .username("sa")
                 .build()
         )

@@ -26,13 +26,13 @@ class SongHandler(
     private val log = LoggerFactory.getLogger(this::class.java)
 
     fun findSong(request: ServerRequest): Mono<ServerResponse> =
-        BaseResponse().success(null)
+        BaseResponse().successNoContent()
+
+    fun findSongAll(request: ServerRequest): Mono<ServerResponse> =
+        BaseResponse().successNoContent()
 
     fun saveSong(request: ServerRequest): Mono<ServerResponse> =
         request.bodyToMono(SongInput::class.java)
             .flatMap { saveSongUseCase.saveSong(it) }
-            .map { BaseResponse().success(it) }
-            .flatMap(::responseBody)
-
-    fun responseBody(it: Any) = ServerResponse.ok().body(BodyInserters.fromValue(it))
+            .flatMap { BaseResponse().success(it) }
 }
