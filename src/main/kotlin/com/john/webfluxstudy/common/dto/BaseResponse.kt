@@ -16,9 +16,35 @@ class BaseResponse (
     constructor(): this(message = "Success", status = HttpStatus.OK, null)
     constructor(message: String?, status: HttpStatus): this(message = message, status = status, null)
 
+    fun error(status: HttpStatus, message: String) =
+        ServerResponse.status(status)
+            .bodyValue(
+                BaseResponse(
+                    message = message,
+                    status = status,
+                    null
+                )
+            )
+
     fun success(data: Any?) =
-        ServerResponse.ok().body(BodyInserters.fromValue(BaseResponse(message = "Success", status = HttpStatus.OK, data)))
+        ServerResponse.ok().body(
+            BodyInserters.fromValue(
+                BaseResponse(
+                    message = "Success",
+                    status = HttpStatus.OK,
+                    data
+                )
+            )
+        )
 
     fun successNoContent() =
-        ServerResponse.ok().body(BodyInserters.fromValue(BaseResponse(message = "Success", status = HttpStatus.OK, null)))
+        ServerResponse.ok().body(
+            BodyInserters.fromValue(
+                BaseResponse(
+                    message = "Success",
+                    status = HttpStatus.OK,
+                    null
+                )
+            )
+        )
 }

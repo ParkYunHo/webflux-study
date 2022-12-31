@@ -12,6 +12,7 @@ import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.bodyToMono
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 /**
@@ -26,10 +27,13 @@ class SongHandler(
     private val log = LoggerFactory.getLogger(this::class.java)
 
     fun findSong(request: ServerRequest): Mono<ServerResponse> =
-        BaseResponse().successNoContent()
+        findSongUseCase.findSong(request.pathVariable("songId").toString())
+            .flatMap { BaseResponse().success(it) }
 
     fun findSongAll(request: ServerRequest): Mono<ServerResponse> =
-        BaseResponse().successNoContent()
+        findSongUseCase.findSongAll()
+            .collectList()
+            .flatMap { BaseResponse().success(it) }
 
     fun saveSong(request: ServerRequest): Mono<ServerResponse> =
         request.bodyToMono(SongInput::class.java)
