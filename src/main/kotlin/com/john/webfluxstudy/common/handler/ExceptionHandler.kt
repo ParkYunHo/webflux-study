@@ -28,6 +28,18 @@ class ExceptionHandler: ErrorWebExceptionHandler {
     override fun handle(exchange: ServerWebExchange, ex: Throwable): Mono<Void> {
         when(ex) {
             is NotFoundDataException -> {
+                log.warn(" >>> [handle] NotFoundDataException occurs - message: {}", ex.message)
+                return exchange.response.writeWith(Mono.fromSupplier {
+                    val bufferFactory = exchange.response.bufferFactory()
+                    exchange.response.statusCode = HttpStatus.BAD_REQUEST
+                    exchange.response.headers.contentType = MediaType.APPLICATION_JSON
+                    return@fromSupplier bufferFactory.wrap(
+                        objectMapper.writeValueAsBytes(BaseResponse(ex.message, HttpStatus.BAD_REQUEST, null))
+                    )
+                })
+            }
+            is IllegalArgumentException -> {
+                log.warn(" >>> [handle] IllegalArgumentException occurs - message: {}", ex.message)
                 return exchange.response.writeWith(Mono.fromSupplier {
                     val bufferFactory = exchange.response.bufferFactory()
                     exchange.response.statusCode = HttpStatus.BAD_REQUEST

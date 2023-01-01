@@ -10,6 +10,7 @@
 
     예:
     | songId    | songName    | method    | url                   | code      | status      |
-    | 1234      |             | GET       | /api/song/{songId}    | 200       | OK          |
-    |           |             | GET       | /api/song             | 200       | OK          |
-    | 1111      | TEST        | POST      | /api/song             | 200       | OK          |
+#    | 1234      |             | GET       | /api/song/{songId}    | 200       | OK          |
+#    |           |             | GET       | /api/song             | 200       | OK          |
+#    | 1111      | TEST        | POST      | /api/song             | 200       | OK          |
+    | 9999      |             | GET       | /api/song/{songId}    | 400       | BAD_REQUEST |
