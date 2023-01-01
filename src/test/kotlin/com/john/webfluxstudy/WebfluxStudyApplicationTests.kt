@@ -1,13 +1,11 @@
 package com.john.webfluxstudy
 
-import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 
-@SpringBootTest
+@SpringBootApplication
 class WebfluxStudyApplicationTests {
-
-    @Test
-    fun contextLoads() {
+    fun main(args: Array<String>) {
+        runApplication<WebfluxStudyApplicationTests>(*args)
     }
-
 }

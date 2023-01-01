@@ -1,49 +1,52 @@
 package com.john.webfluxstudy.common.handler
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.john.webfluxstudy.common.dto.BaseResponse
 import com.john.webfluxstudy.common.exception.NotFoundDataException
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.web.WebProperties
-import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler
-import org.springframework.boot.web.reactive.error.ErrorAttributes
-import org.springframework.context.ApplicationContext
+import org.slf4j.LoggerFactory
+import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
-import org.springframework.http.codec.ServerCodecConfigurer
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
-import org.springframework.web.reactive.function.server.*
+import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
 
 /**
- * @note
- *  - @Order(-2): DefaultErrorWebExceptionHandler가 "@Order(-1)"로 설정되어 있어 먼저 실행하려면 -2로 설정해야 됨
- *
  * @author yoonho
- * @since 2022.12.31
+ * @since 2023.01.01
  */
 @Component
 @Order(-2)
-class ExceptionHandler(
-    errorAttributes: ErrorAttributes,
-    resources: WebProperties,
-    applicationContext: ApplicationContext,
-    serverCodecConfigurer: ServerCodecConfigurer,
-): AbstractErrorWebExceptionHandler(errorAttributes, resources.resources, applicationContext) {
+class ExceptionHandler: ErrorWebExceptionHandler {
 
-    init {
-        super.setMessageReaders(serverCodecConfigurer.readers)
-        super.setMessageWriters(serverCodecConfigurer.writers)
+    companion object {
+        private val log = LoggerFactory.getLogger(this::class.java)
+        private val objectMapper = ObjectMapper()
     }
 
-    override fun getRoutingFunction(errorAttributes: ErrorAttributes?): RouterFunction<ServerResponse> =
-        RouterFunctions.route(RequestPredicates.all(), this::handleError)
-
-    private fun handleError(request: ServerRequest): Mono<ServerResponse> =
-        when(val throwable = super.getError(request)) {
-            is NotFoundDataException -> BaseResponse().error(HttpStatus.BAD_REQUEST, throwable.javaClass.simpleName + ": " + throwable.message)
+    override fun handle(exchange: ServerWebExchange, ex: Throwable): Mono<Void> {
+        when(ex) {
+            is NotFoundDataException -> {
+                return exchange.response.writeWith(Mono.fromSupplier {
+                    val bufferFactory = exchange.response.bufferFactory()
+                    exchange.response.statusCode = HttpStatus.BAD_REQUEST
+                    exchange.response.headers.contentType = MediaType.APPLICATION_JSON
+                    return@fromSupplier bufferFactory.wrap(
+                        objectMapper.writeValueAsBytes(BaseResponse(ex.message, HttpStatus.BAD_REQUEST, null))
+                    )
+                })
+            }
             else -> {
-                throwable.printStackTrace()
-                BaseResponse().error(HttpStatus.BAD_REQUEST, throwable.javaClass.simpleName + ": " + throwable.message)
+                return exchange.response.writeWith(Mono.fromSupplier {
+                    val bufferFactory = exchange.response.bufferFactory()
+                    exchange.response.statusCode = HttpStatus.BAD_REQUEST
+                    exchange.response.headers.contentType = MediaType.APPLICATION_JSON
+                    return@fromSupplier bufferFactory.wrap(
+                        objectMapper.writeValueAsBytes(BaseResponse(ex.message, HttpStatus.BAD_REQUEST, null))
+                    )
+                })
             }
         }
+    }
 }
