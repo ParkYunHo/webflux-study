@@ -28,7 +28,7 @@ class SongPersistenceAdapter(
         return songRepository.save(
                     Song(
                         songId = input.songId,
-                        songName = input.songName
+                        songName = input.songName,
                     )
                 )
     }
@@ -37,7 +37,7 @@ class SongPersistenceAdapter(
         log.info(" >>> [findSong] songId: {}", songId)
         require(!songId.isNullOrEmpty()) { "곡ID를 입력해주세요." }
 
-        return songRepository.findById(songId)
+        return songRepository.findBySongId(songId)
             .switchIfEmpty { Mono.error(NotFoundDataException("곡 정보가 존재하지 않습니다.")) }
     }
 

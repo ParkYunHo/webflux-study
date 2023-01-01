@@ -41,6 +41,9 @@ class ExceptionHandler(
     private fun handleError(request: ServerRequest): Mono<ServerResponse> =
         when(val throwable = super.getError(request)) {
             is NotFoundDataException -> BaseResponse().error(HttpStatus.BAD_REQUEST, throwable.javaClass.simpleName + ": " + throwable.message)
-            else -> BaseResponse().error(HttpStatus.BAD_REQUEST, throwable.javaClass.simpleName + ": " + throwable.message)
+            else -> {
+                throwable.printStackTrace()
+                BaseResponse().error(HttpStatus.BAD_REQUEST, throwable.javaClass.simpleName + ": " + throwable.message)
+            }
         }
 }
