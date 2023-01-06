@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Assertions.assertEquals
 
 import com.john.webfluxstudy.common.dto.BaseResponse
+import com.john.webfluxstudy.common.handler.ExceptionHandler
 import com.john.webfluxstudy.song.adapter.`in`.web.SongRouter
 import com.john.webfluxstudy.song.adapter.`in`.web.dto.SongInput
 import io.cucumber.java.Before
@@ -14,9 +15,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
-import org.springframework.mock.http.server.reactive.MockServerHttpResponse
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.web.reactive.function.BodyInserters
+import org.springframework.web.reactive.function.server.HandlerStrategies
 
 /**
  * @author yoonho
@@ -38,7 +39,13 @@ class SongStep {
 
     @Before(value = "@song")
     fun init() {
-        webTestClient = WebTestClient.bindToRouterFunction(router.songRouterFunction()).build()
+        webTestClient = WebTestClient.bindToRouterFunction(router.songRouterFunction())
+            .handlerStrategies(
+                HandlerStrategies.builder()
+                    .exceptionHandler(ExceptionHandler())
+                    .build()
+            )
+            .build()
     }
 
     @먼저("곡정보 관리API 호출을 위한 {string}{string} 가 있다")

@@ -23,7 +23,7 @@ class SongPersistenceAdapter(
 
     override fun saveSong(input: SongInput): Mono<Song> {
         log.info(" >>> [saveSong] input: {}", input)
-        require(input != null) { "곡 정보를 입력해주세요." }
+        require(input != null && !input.songId.isNullOrEmpty() ) { "곡 정보를 입력해주세요." }
 
         return songRepository.save(
                     Song(
