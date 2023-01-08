@@ -47,8 +47,14 @@ dependencies {
     testImplementation("io.cucumber:cucumber-junit-platform-engine:7.5.0")
     testImplementation("org.junit.platform:junit-platform-suite-api")
 
-    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
-    testImplementation("org.springframework.restdocs:spring-restdocs-asciidoctor")
+
+    implementation("org.springdoc:springdoc-openapi-webflux-core:1.6.9")
+    implementation("org.springdoc:springdoc-openapi-webflux-ui:1.6.9")
+    implementation("org.springdoc:springdoc-openapi-kotlin:1.6.9")
+
+//    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+//    testImplementation("org.springframework.restdocs:spring-restdocs-asciidoctor")
+//    testImplementation("com.epages:restdocs-api-spec-mockmvc:0.16.0")
 }
 
 sourceSets {
@@ -68,3 +74,38 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//val snippetsDir by extra { file("build/generated-snippets") }
+//
+//tasks.withType<Test> {
+//    outputs.dir(snippetsDir)
+//    useJUnitPlatform()
+//}
+//
+//tasks.asciidoctor {
+//    inputs.dir(snippetsDir)
+//    dependsOn(tasks.test)
+//}
+//
+//tasks.register("copyHTML", Copy::class) {
+//    dependsOn(tasks.asciidoctor)
+//    from(file("build/docs/asciidoc"))
+//    into(file("src/main/resources/static/docs"))
+//}
+//
+//tasks.build {
+//    dependsOn(tasks.getByName("copyHTML"))
+//}
+//
+//tasks.jar {
+//    enabled = false
+//}
+//
+//tasks.bootJar {
+//    enabled = true
+//    dependsOn(tasks.asciidoctor)
+//    dependsOn(tasks.getByName("copyHTML"))
+//}
