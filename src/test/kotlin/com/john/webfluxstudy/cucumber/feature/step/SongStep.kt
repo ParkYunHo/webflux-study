@@ -88,7 +88,7 @@ class SongStep {
                         is SongStep -> {
                             data = it.data as SongStep
                             assertEquals(data.songId, this.songId)
-                            assertEquals(data.songName, this.songName ?: "TEST")
+                            assertEquals(data.songName, this.songName)
                         }
                         is List<*> -> {
                             data = it.data as List<*>

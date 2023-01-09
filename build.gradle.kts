@@ -47,7 +47,7 @@ dependencies {
     testImplementation("io.cucumber:cucumber-junit-platform-engine:7.5.0")
     testImplementation("org.junit.platform:junit-platform-suite-api")
 
-
+    // Open API
     implementation("org.springdoc:springdoc-openapi-webflux-core:1.6.9")
     implementation("org.springdoc:springdoc-openapi-webflux-ui:1.6.9")
     implementation("org.springdoc:springdoc-openapi-kotlin:1.6.9")
@@ -56,6 +56,10 @@ dependencies {
 //    testImplementation("org.springframework.restdocs:spring-restdocs-asciidoctor")
 //    testImplementation("com.epages:restdocs-api-spec-mockmvc:0.16.0")
 }
+
+//tasks.getByName<Jar>("jar") {
+//    enabled = false
+//}
 
 sourceSets {
     test {
