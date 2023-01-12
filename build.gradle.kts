@@ -4,6 +4,7 @@ plugins {
     id("org.springframework.boot") version "3.0.1"
     id("io.spring.dependency-management") version "1.1.0"
     id("org.asciidoctor.jvm.convert") version "3.3.2"
+    id("com.google.cloud.tools.jib") version "3.3.1"
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
     kotlin("plugin.jpa") version "1.7.22"
@@ -113,3 +114,23 @@ tasks.withType<Test> {
 //    dependsOn(tasks.asciidoctor)
 //    dependsOn(tasks.getByName("copyHTML"))
 //}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+// jib 설정
+jib {
+    from {
+        image = "eclipse-temurin:17"
+    }
+    to {
+        image = "johnpark0921/webflux-study-jib"
+//        auth {
+//            username = ""
+//            password = ""
+//        }
+        tags = setOf("prod")
+    }
+    container {
+        jvmFlags = listOf("-XX:MinRAMPercentage=50.0", "-XX:MaxRAMPercentage=80.0")
+    }
+}
